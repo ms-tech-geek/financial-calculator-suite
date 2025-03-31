@@ -160,7 +160,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-12">
-        <div className="text-center">
+        <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900">
             Financial Investment Calculators
           </h1>
@@ -169,19 +169,18 @@ function App() {
           </p>
         </div>
 
-        <Tabs
-          tabs={[
-            { id: 'sip', label: 'SIP', icon: <Coins className="w-5 h-5" /> },
-            { id: 'lumpsum', label: 'Lumpsum', icon: <PiggyBank className="w-5 h-5" /> },
-            { id: 'retirement', label: 'Retirement', icon: <Heart className="w-5 h-5" /> },
-            { id: 'swp', label: 'SWP', icon: <TrendingDown className="w-5 h-5" /> },
-            { id: 'goal', label: 'Goal-based', icon: <Target className="w-5 h-5" /> }
-          ]}
-          activeTab={activeTab}
-          onChange={setActiveTab}
-        />
-
-        <div className="mt-8">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <Tabs
+            tabs={[
+              { id: 'sip', label: 'SIP', icon: <Coins className="w-5 h-5" /> },
+              { id: 'lumpsum', label: 'Lumpsum', icon: <PiggyBank className="w-5 h-5" /> },
+              { id: 'retirement', label: 'Retirement', icon: <Heart className="w-5 h-5" /> },
+              { id: 'swp', label: 'SWP', icon: <TrendingDown className="w-5 h-5" /> },
+              { id: 'goal', label: 'Goal-based', icon: <Target className="w-5 h-5" /> }
+            ]}
+            activeTab={activeTab}
+            onChange={setActiveTab}
+          />
           {activeTab === 'sip' && (
             <Calculator
               title="SIP Calculator"
