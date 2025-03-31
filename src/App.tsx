@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calculator } from './components/Calculator';
 import { Input } from './components/Input';
+import { Tabs } from './components/Tabs';
 import {
   calculateSIP,
   calculateLumpsum,
@@ -63,6 +64,8 @@ const tooltips = {
 };
 
 function App() {
+  const [activeTab, setActiveTab] = React.useState('sip');
+
   // SIP Calculator State
   const [sipInputs, setSipInputs] = React.useState({
     monthlyInvestment: 5000,
@@ -166,230 +169,249 @@ function App() {
           </p>
         </div>
 
-        {/* SIP Calculator */}
-        <Calculator
-          title="SIP Calculator"
-          description="Calculate your wealth with systematic investments"
-          result={sipResult}
-          tooltips={tooltips}
-        >
-          <div className="flex items-center gap-2 text-blue-600 mb-4">
-            <Coins className="w-5 h-5" />
-            <span className="font-medium">Systematic Investment Plan</span>
-          </div>
-          <Input
-            label="Monthly Investment (₹)"
-            value={sipInputs.monthlyInvestment}
-            onChange={(value) => setSipInputs(prev => ({ ...prev, monthlyInvestment: value }))}
-            min={500}
-            tooltip={tooltips.monthlyInvestment}
-          />
-          <Input
-            label="Investment Period (Years)"
-            value={sipInputs.years}
-            onChange={(value) => setSipInputs(prev => ({ ...prev, years: value }))}
-            min={1}
-            max={40}
-            tooltip={tooltips.years}
-          />
-          <Input
-            label="Expected Return (%)"
-            value={sipInputs.expectedReturn}
-            onChange={(value) => setSipInputs(prev => ({ ...prev, expectedReturn: value }))}
-            min={1}
-            max={30}
-            step={0.1}
-            tooltip={tooltips.expectedReturn}
-          />
-        </Calculator>
+        <Tabs
+          tabs={[
+            { id: 'sip', label: 'SIP', icon: <Coins className="w-5 h-5" /> },
+            { id: 'lumpsum', label: 'Lumpsum', icon: <PiggyBank className="w-5 h-5" /> },
+            { id: 'retirement', label: 'Retirement', icon: <Heart className="w-5 h-5" /> },
+            { id: 'swp', label: 'SWP', icon: <TrendingDown className="w-5 h-5" /> },
+            { id: 'goal', label: 'Goal-based', icon: <Target className="w-5 h-5" /> }
+          ]}
+          activeTab={activeTab}
+          onChange={setActiveTab}
+        />
 
-        {/* Lumpsum Calculator */}
-        <Calculator
-          title="Lumpsum Calculator"
-          description="See how your one-time investment grows"
-          result={lumpsumResult}
-          tooltips={tooltips}
-        >
-          <div className="flex items-center gap-2 text-blue-600 mb-4">
-            <PiggyBank className="w-5 h-5" />
-            <span className="font-medium">Lumpsum Investment</span>
-          </div>
-          <Input
-            label="Principal Amount (₹)"
-            value={lumpsumInputs.principal}
-            onChange={(value) => setLumpsumInputs(prev => ({ ...prev, principal: value }))}
-            min={1000}
-            tooltip={tooltips.principal}
-          />
-          <Input
-            label="Investment Period (Years)"
-            value={lumpsumInputs.years}
-            onChange={(value) => setLumpsumInputs(prev => ({ ...prev, years: value }))}
-            min={1}
-            max={40}
-            tooltip={tooltips.years}
-          />
-          <Input
-            label="Expected Return (%)"
-            value={lumpsumInputs.expectedReturn}
-            onChange={(value) => setLumpsumInputs(prev => ({ ...prev, expectedReturn: value }))}
-            min={1}
-            max={30}
-            step={0.1}
-            tooltip={tooltips.expectedReturn}
-          />
-        </Calculator>
+        <div className="mt-8">
+          {activeTab === 'sip' && (
+            <Calculator
+              title="SIP Calculator"
+              description="Calculate your wealth with systematic investments"
+              result={sipResult}
+              tooltips={tooltips}
+            >
+              <div className="flex items-center gap-2 text-blue-600 mb-4">
+                <Coins className="w-5 h-5" />
+                <span className="font-medium">Systematic Investment Plan</span>
+              </div>
+              <Input
+                label="Monthly Investment (₹)"
+                value={sipInputs.monthlyInvestment}
+                onChange={(value) => setSipInputs(prev => ({ ...prev, monthlyInvestment: value }))}
+                min={500}
+                tooltip={tooltips.monthlyInvestment}
+              />
+              <Input
+                label="Investment Period (Years)"
+                value={sipInputs.years}
+                onChange={(value) => setSipInputs(prev => ({ ...prev, years: value }))}
+                min={1}
+                max={40}
+                tooltip={tooltips.years}
+              />
+              <Input
+                label="Expected Return (%)"
+                value={sipInputs.expectedReturn}
+                onChange={(value) => setSipInputs(prev => ({ ...prev, expectedReturn: value }))}
+                min={1}
+                max={30}
+                step={0.1}
+                tooltip={tooltips.expectedReturn}
+              />
+            </Calculator>
+          )}
 
-        {/* Retirement Calculator */}
-        <Calculator
-          title="Retirement Calculator"
-          description="Plan for a comfortable retirement"
-          result={retirementResult}
-          tooltips={tooltips}
-        >
-          <div className="flex items-center gap-2 text-blue-600 mb-4">
-            <Heart className="w-5 h-5" />
-            <span className="font-medium">Retirement Planning</span>
-          </div>
-          <Input
-            label="Current Age"
-            value={retirementInputs.currentAge}
-            onChange={(value) => setRetirementInputs(prev => ({ ...prev, currentAge: value }))}
-            min={18}
-            max={70}
-            tooltip={tooltips.currentAge}
-          />
-          <Input
-            label="Retirement Age"
-            value={retirementInputs.retirementAge}
-            onChange={(value) => setRetirementInputs(prev => ({ ...prev, retirementAge: value }))}
-            min={45}
-            max={80}
-            tooltip={tooltips.retirementAge}
-          />
-          <Input
-            label="Monthly Expenses (₹)"
-            value={retirementInputs.monthlyExpenses}
-            onChange={(value) => setRetirementInputs(prev => ({ ...prev, monthlyExpenses: value }))}
-            min={10000}
-            tooltip={tooltips.monthlyExpenses}
-          />
-          <Input
-            label="Current Savings (₹)"
-            value={retirementInputs.currentSavings}
-            onChange={(value) => setRetirementInputs(prev => ({ ...prev, currentSavings: value }))}
-            min={0}
-            tooltip={tooltips.currentSavings}
-          />
-          <Input
-            label="Expected Return (%)"
-            value={retirementInputs.expectedReturn}
-            onChange={(value) => setRetirementInputs(prev => ({ ...prev, expectedReturn: value }))}
-            min={1}
-            max={30}
-            step={0.1}
-            tooltip={tooltips.expectedReturn}
-          />
-          <Input
-            label="Inflation Rate (%)"
-            value={retirementInputs.inflation}
-            onChange={(value) => setRetirementInputs(prev => ({ ...prev, inflation: value }))}
-            min={1}
-            max={15}
-            step={0.1}
-            tooltip={tooltips.inflation}
-          />
-        </Calculator>
+          {activeTab === 'lumpsum' && (
+            <Calculator
+              title="Lumpsum Calculator"
+              description="See how your one-time investment grows"
+              result={lumpsumResult}
+              tooltips={tooltips}
+            >
+              <div className="flex items-center gap-2 text-blue-600 mb-4">
+                <PiggyBank className="w-5 h-5" />
+                <span className="font-medium">Lumpsum Investment</span>
+              </div>
+              <Input
+                label="Principal Amount (₹)"
+                value={lumpsumInputs.principal}
+                onChange={(value) => setLumpsumInputs(prev => ({ ...prev, principal: value }))}
+                min={1000}
+                tooltip={tooltips.principal}
+              />
+              <Input
+                label="Investment Period (Years)"
+                value={lumpsumInputs.years}
+                onChange={(value) => setLumpsumInputs(prev => ({ ...prev, years: value }))}
+                min={1}
+                max={40}
+                tooltip={tooltips.years}
+              />
+              <Input
+                label="Expected Return (%)"
+                value={lumpsumInputs.expectedReturn}
+                onChange={(value) => setLumpsumInputs(prev => ({ ...prev, expectedReturn: value }))}
+                min={1}
+                max={30}
+                step={0.1}
+                tooltip={tooltips.expectedReturn}
+              />
+            </Calculator>
+          )}
 
-        {/* SWP Calculator */}
-        <Calculator
-          title="SWP Calculator"
-          description="Plan your systematic withdrawals"
-          result={swpResult}
-          tooltips={tooltips}
-        >
-          <div className="flex items-center gap-2 text-blue-600 mb-4">
-            <TrendingDown className="w-5 h-5" />
-            <span className="font-medium">Systematic Withdrawal Plan</span>
-          </div>
-          <Input
-            label="Initial Corpus (₹)"
-            value={swpInputs.corpus}
-            onChange={(value) => setSwpInputs(prev => ({ ...prev, corpus: value }))}
-            min={100000}
-            tooltip={tooltips.corpus}
-          />
-          <Input
-            label="Annual Withdrawal Rate (%)"
-            value={swpInputs.withdrawalRate}
-            onChange={(value) => setSwpInputs(prev => ({ ...prev, withdrawalRate: value }))}
-            min={1}
-            max={20}
-            step={0.1}
-            tooltip={tooltips.withdrawalRate}
-          />
-          <Input
-            label="Time Period (Years)"
-            value={swpInputs.years}
-            onChange={(value) => setSwpInputs(prev => ({ ...prev, years: value }))}
-            min={1}
-            max={40}
-            tooltip={tooltips.years}
-          />
-          <Input
-            label="Expected Return (%)"
-            value={swpInputs.expectedReturn}
-            onChange={(value) => setSwpInputs(prev => ({ ...prev, expectedReturn: value }))}
-            min={1}
-            max={30}
-            step={0.1}
-            tooltip={tooltips.expectedReturn}
-          />
-        </Calculator>
+          {activeTab === 'retirement' && (
+            <Calculator
+              title="Retirement Calculator"
+              description="Plan for a comfortable retirement"
+              result={retirementResult}
+              tooltips={tooltips}
+            >
+              <div className="flex items-center gap-2 text-blue-600 mb-4">
+                <Heart className="w-5 h-5" />
+                <span className="font-medium">Retirement Planning</span>
+              </div>
+              <Input
+                label="Current Age"
+                value={retirementInputs.currentAge}
+                onChange={(value) => setRetirementInputs(prev => ({ ...prev, currentAge: value }))}
+                min={18}
+                max={70}
+                tooltip={tooltips.currentAge}
+              />
+              <Input
+                label="Retirement Age"
+                value={retirementInputs.retirementAge}
+                onChange={(value) => setRetirementInputs(prev => ({ ...prev, retirementAge: value }))}
+                min={45}
+                max={80}
+                tooltip={tooltips.retirementAge}
+              />
+              <Input
+                label="Monthly Expenses (₹)"
+                value={retirementInputs.monthlyExpenses}
+                onChange={(value) => setRetirementInputs(prev => ({ ...prev, monthlyExpenses: value }))}
+                min={10000}
+                tooltip={tooltips.monthlyExpenses}
+              />
+              <Input
+                label="Current Savings (₹)"
+                value={retirementInputs.currentSavings}
+                onChange={(value) => setRetirementInputs(prev => ({ ...prev, currentSavings: value }))}
+                min={0}
+                tooltip={tooltips.currentSavings}
+              />
+              <Input
+                label="Expected Return (%)"
+                value={retirementInputs.expectedReturn}
+                onChange={(value) => setRetirementInputs(prev => ({ ...prev, expectedReturn: value }))}
+                min={1}
+                max={30}
+                step={0.1}
+                tooltip={tooltips.expectedReturn}
+              />
+              <Input
+                label="Inflation Rate (%)"
+                value={retirementInputs.inflation}
+                onChange={(value) => setRetirementInputs(prev => ({ ...prev, inflation: value }))}
+                min={1}
+                max={15}
+                step={0.1}
+                tooltip={tooltips.inflation}
+              />
+            </Calculator>
+          )}
 
-        {/* Goal-based Calculator */}
-        <Calculator
-          title="Goal-based Calculator"
-          description="Plan for your financial goals"
-          result={goalResult}
-          tooltips={tooltips}
-        >
-          <div className="flex items-center gap-2 text-blue-600 mb-4">
-            <Target className="w-5 h-5" />
-            <span className="font-medium">Goal-based Investment</span>
-          </div>
-          <Input
-            label="Goal Amount (₹)"
-            value={goalInputs.goalAmount}
-            onChange={(value) => setGoalInputs(prev => ({ ...prev, goalAmount: value }))}
-            min={10000}
-            tooltip={tooltips.goalAmount}
-          />
-          <Input
-            label="Initial Investment (₹)"
-            value={goalInputs.initialInvestment}
-            onChange={(value) => setGoalInputs(prev => ({ ...prev, initialInvestment: value }))}
-            min={0}
-            tooltip={tooltips.principal}
-          />
-          <Input
-            label="Time to Goal (Years)"
-            value={goalInputs.years}
-            onChange={(value) => setGoalInputs(prev => ({ ...prev, years: value }))}
-            min={1}
-            max={40}
-            tooltip={tooltips.years}
-          />
-          <Input
-            label="Expected Return (%)"
-            value={goalInputs.expectedReturn}
-            onChange={(value) => setGoalInputs(prev => ({ ...prev, expectedReturn: value }))}
-            min={1}
-            max={30}
-            step={0.1}
-            tooltip={tooltips.expectedReturn}
-          />
-        </Calculator>
+          {activeTab === 'swp' && (
+            <Calculator
+              title="SWP Calculator"
+              description="Plan your systematic withdrawals"
+              result={swpResult}
+              tooltips={tooltips}
+            >
+              <div className="flex items-center gap-2 text-blue-600 mb-4">
+                <TrendingDown className="w-5 h-5" />
+                <span className="font-medium">Systematic Withdrawal Plan</span>
+              </div>
+              <Input
+                label="Initial Corpus (₹)"
+                value={swpInputs.corpus}
+                onChange={(value) => setSwpInputs(prev => ({ ...prev, corpus: value }))}
+                min={100000}
+                tooltip={tooltips.corpus}
+              />
+              <Input
+                label="Annual Withdrawal Rate (%)"
+                value={swpInputs.withdrawalRate}
+                onChange={(value) => setSwpInputs(prev => ({ ...prev, withdrawalRate: value }))}
+                min={1}
+                max={20}
+                step={0.1}
+                tooltip={tooltips.withdrawalRate}
+              />
+              <Input
+                label="Time Period (Years)"
+                value={swpInputs.years}
+                onChange={(value) => setSwpInputs(prev => ({ ...prev, years: value }))}
+                min={1}
+                max={40}
+                tooltip={tooltips.years}
+              />
+              <Input
+                label="Expected Return (%)"
+                value={swpInputs.expectedReturn}
+                onChange={(value) => setSwpInputs(prev => ({ ...prev, expectedReturn: value }))}
+                min={1}
+                max={30}
+                step={0.1}
+                tooltip={tooltips.expectedReturn}
+              />
+            </Calculator>
+          )}
+
+          {activeTab === 'goal' && (
+            <Calculator
+              title="Goal-based Calculator"
+              description="Plan for your financial goals"
+              result={goalResult}
+              tooltips={tooltips}
+            >
+              <div className="flex items-center gap-2 text-blue-600 mb-4">
+                <Target className="w-5 h-5" />
+                <span className="font-medium">Goal-based Investment</span>
+              </div>
+              <Input
+                label="Goal Amount (₹)"
+                value={goalInputs.goalAmount}
+                onChange={(value) => setGoalInputs(prev => ({ ...prev, goalAmount: value }))}
+                min={10000}
+                tooltip={tooltips.goalAmount}
+              />
+              <Input
+                label="Initial Investment (₹)"
+                value={goalInputs.initialInvestment}
+                onChange={(value) => setGoalInputs(prev => ({ ...prev, initialInvestment: value }))}
+                min={0}
+                tooltip={tooltips.principal}
+              />
+              <Input
+                label="Time to Goal (Years)"
+                value={goalInputs.years}
+                onChange={(value) => setGoalInputs(prev => ({ ...prev, years: value }))}
+                min={1}
+                max={40}
+                tooltip={tooltips.years}
+              />
+              <Input
+                label="Expected Return (%)"
+                value={goalInputs.expectedReturn}
+                onChange={(value) => setGoalInputs(prev => ({ ...prev, expectedReturn: value }))}
+                min={1}
+                max={30}
+                step={0.1}
+                tooltip={tooltips.expectedReturn}
+              />
+            </Calculator>
+          )}
+        </div>
       </div>
     </div>
   );
