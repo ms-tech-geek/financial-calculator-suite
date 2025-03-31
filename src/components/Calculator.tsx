@@ -27,7 +27,7 @@ export const Calculator: React.FC<CalculatorProps> = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto overflow-hidden">
+    <div className="w-full overflow-hidden">
       <div className="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700">
         <h2 className="text-2xl font-bold text-white">{title}</h2>
         <p className="text-blue-100 mt-1">{description}</p>

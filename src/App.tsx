@@ -169,7 +169,7 @@ function App() {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto">
           <Tabs
             tabs={[
               { id: 'sip', label: 'SIP', icon: <Coins className="w-5 h-5" /> },
